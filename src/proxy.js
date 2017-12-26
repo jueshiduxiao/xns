@@ -18,7 +18,9 @@ module.exports = (function (fs, path, http) {
                 port: remoteUri.port || 80,
                 method: req.method || 'GET',
                 path: '',
-                headers: {}
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
             };
 
             var querystring = require('querystring');
