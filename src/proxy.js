@@ -19,7 +19,7 @@ module.exports = (function (fs, path, http) {
                 method: req.method || 'GET',
                 path: '',
                 headers: {
-                    'Cache-Control': 'no-cache'
+                    'cache-control': 'no-cache'
                 }
             };
 
@@ -30,7 +30,7 @@ module.exports = (function (fs, path, http) {
 
             var key, val;
             for (key in req.headers) {
-                if (['host'].indexOf(key) >= 0) {
+                if (['host', 'cache-control'].indexOf(key) >= 0) {
                     continue;
                 }
                 val = req.headers[key];

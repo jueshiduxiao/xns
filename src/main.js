@@ -197,7 +197,7 @@ exports = module.exports = (function (fs, path, express, underscore, console) {
                 item = _pri.proxyList[i];
                 rule = new RegExp(item.rule || '');
 
-                if (url.match(rule)) {
+                if (upath.match(rule)) {
                     isMatch = true;
 
                     if (item.remote.indexOf('http://') !== 0) {
