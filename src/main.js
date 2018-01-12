@@ -208,7 +208,8 @@ exports = module.exports = (function (fs, path, express, underscore, console) {
                         res.redirect(item.remote);
                         return;
                     }
-                    proxy.run(req, res, $$stringHelper.regexpReplace(url, rule, item.remote), item.proxyCookie);
+                    proxy.run(req, res, $$stringHelper.regexpReplace(url, rule, item.remote),
+                        item.remoteHostName, item.proxyCookie, item.proxyHost);
                     break;
                 }
             }

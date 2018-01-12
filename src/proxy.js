@@ -8,13 +8,13 @@ module.exports = (function (fs, path, http) {
         var _init = function () {
         };
 
-        _pub['run'] = function (req, res, remote, proxyCookie) {
+        _pub['run'] = function (req, res, remote, remoteHostName, proxyCookie) {
             var url = require('url');
             var remoteUri = url.parse(decodeURIComponent(remote));
 
             var reqProxyOption = {
                 host: remoteUri.host,
-                hostname: remoteUri.hostname,
+                hostname: remoteHostName ||　remoteUri.hostname,
                 port: remoteUri.port || 80,
                 method: req.method || 'GET',
                 path: '',
