@@ -8,7 +8,7 @@ module.exports = (function (fs, path, http) {
         var _init = function () {
         };
 
-        _pub['run'] = function (req, res, remote, remoteHostName, proxyCookie) {
+        _pub['run'] = function (req, res, remote, remoteHostName, proxyCookie, proxyHost) {
             var url = require('url');
             var remoteUri = url.parse(decodeURIComponent(remote));
 
@@ -23,6 +23,11 @@ module.exports = (function (fs, path, http) {
                 }
             };
 
+            if (remoteUri.protocol === 'https:') {
+                reqProxyOption.port = 443;
+                http = require('https');
+            }
+
             var querystring = require('querystring');
             var queryObj = _.extend({}, req.query, querystring.parse(remoteUri.query));
             var query = querystring.stringify(queryObj);
@@ -30,7 +35,7 @@ module.exports = (function (fs, path, http) {
 
             var key, val;
             for (key in req.headers) {
-                if (['host', 'cache-control'].indexOf(key) >= 0) {
+                if (['host', 'cache-control'].indexOf(key) >= 0 && !proxyHost) {
                     continue;
                 }
                 val = req.headers[key];
@@ -82,6 +87,14 @@ module.exports = (function (fs, path, http) {
                     if (key === 'Location' && typeof val === 'string') {
                         res.status(302);
                     }
+                }
+
+                res.set('Access-Control-Allow-Origin', req.headers.origin);
+                res.set('Access-Control-Allow-Headers', 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+                res.set('Access-Control-Allow-Credentials', true);
+                res.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+                if (req.method === 'OPTIONS') {
+                    res.status(200);
                 }
 
                 res.write(resBodyBuffer);
