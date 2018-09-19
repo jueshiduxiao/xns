@@ -8,7 +8,7 @@ module.exports = (function (fs, path, http) {
         var _init = function () {
         };
 
-        _pub['run'] = function (req, res, remote, remoteHostName, proxyCookie, proxyHost) {
+        _pub['run'] = function (req, res, remote, remoteHostName, proxyCookie, proxyHost, referer) {
             var url = require('url');
             var remoteUri = url.parse(decodeURIComponent(remote));
 
@@ -19,7 +19,7 @@ module.exports = (function (fs, path, http) {
                 method: req.method || 'GET',
                 path: '',
                 headers: {
-                    'cache-control': 'no-cache'
+                  'cache-control': 'no-cache'
                 }
             };
 
@@ -41,6 +41,9 @@ module.exports = (function (fs, path, http) {
                 val = req.headers[key];
                 reqProxyOption.headers[key] = val;
             }
+            if (referer) {
+              reqProxyOption.headers.Referer = referer;
+            }
 
             var reqExe = function (fn) {
                 var reqBuffer = [];
@@ -60,7 +63,7 @@ module.exports = (function (fs, path, http) {
                     val = resProxy.headers[key];
                     key = key.split('-');
                     key.forEach(function (item, i) {
-                        key[i] = item.slice(0, 1).toUpperCase() + item.slice(1);  
+                        key[i] = item.slice(0, 1).toUpperCase() + item.slice(1);
                     });
                     key = key.join('-');
                     if (proxyCookie === true && key === 'Set-Cookie') {
@@ -93,6 +96,7 @@ module.exports = (function (fs, path, http) {
                 res.set('Access-Control-Allow-Headers', 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
                 res.set('Access-Control-Allow-Credentials', true);
                 res.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+                res.set('X-Origin-URL', remote);
                 if (req.method === 'OPTIONS') {
                     res.status(200);
                 }
@@ -171,7 +175,7 @@ module.exports = (function (fs, path, http) {
                 console.log('error1' + e.message);
             });
             callback(req);
-        };        
+        };
 
         _pub['run1'] = function (reqInfo, remoteUrl, proxyCookie, callback) {
             var reqOpt = _pri.formatReq(reqInfo, remoteUrl);

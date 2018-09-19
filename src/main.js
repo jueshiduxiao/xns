@@ -200,15 +200,23 @@ exports = module.exports = (function (fs, path, express, underscore, console) {
                 if (upath.match(rule)) {
                     isMatch = true;
 
-                    if (!item.remote.match(/^https?:\/\//)) {
-                        item.remote = '//' + req.headers.host + item.remote;
+                    if (item.remote.indexOf('http://') !== 0 && item.remote.indexOf('https://') !== 0) {
+                        item.remote = 'http://' + req.headers.host + item.remote;
                     }
 
                     if (item.proxyType === 302) {
                         res.redirect(item.remote);
                         return;
                     }
-                    proxy.run(req, res, $$stringHelper.regexpReplace(url, rule, item.remote), item.remoteHostName, item.proxyCookie, item.proxyHost);
+                    proxy.run(
+                      req,
+                      res,
+                      $$stringHelper.regexpReplace(url, rule, item.remote),
+                      item.remoteHostName,
+                      item.proxyCookie,
+                      item.proxyHost,
+                      item.referer
+                    );
                     break;
                 }
             }
