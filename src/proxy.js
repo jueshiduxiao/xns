@@ -1,4 +1,4 @@
-module.exports = (function (fs, path, http) {
+module.exports = (function (fs, path) {
     var _ = require('./underscore.v1.4.4.min.js');
 
     var _pub_static = function () {
@@ -7,6 +7,8 @@ module.exports = (function (fs, path, http) {
 
         var _init = function () {
         };
+
+        var http;
 
         _pub['run'] = function (req, res, remote, remoteHostName, proxyCookie, proxyHost, referer) {
             var url = require('url');
@@ -26,6 +28,8 @@ module.exports = (function (fs, path, http) {
             if (remoteUri.protocol === 'https:') {
                 reqProxyOption.port = 443;
                 http = require('https');
+            } else {
+              http = require('http');
             }
 
             var querystring = require('querystring');
@@ -232,6 +236,5 @@ module.exports = (function (fs, path, http) {
     return new _pub_static();
 })(
     require('fs'),
-    require('path'),
-    require('http')
+    require('path')
 );

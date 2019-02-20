@@ -200,8 +200,8 @@ exports = module.exports = (function (fs, path, express, underscore, console) {
                 if (upath.match(rule)) {
                     isMatch = true;
 
-                    if (item.remote.indexOf('http://') !== 0 && item.remote.indexOf('https://') !== 0) {
-                        item.remote = 'http://' + req.headers.host + item.remote;
+                    if (!item.remote.match(/^https?:\/\//)) {
+                        item.remote = '//' + req.headers.host + item.remote;
                     }
 
                     if (item.proxyType === 302) {
@@ -214,8 +214,7 @@ exports = module.exports = (function (fs, path, express, underscore, console) {
                       $$stringHelper.regexpReplace(url, rule, item.remote),
                       item.remoteHostName,
                       item.proxyCookie,
-                      item.proxyHost,
-                      item.referer
+                      item.proxyHost
                     );
                     break;
                 }
