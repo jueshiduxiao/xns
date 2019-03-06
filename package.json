@@ -1,6 +1,6 @@
 {
   "name": "nodejs-server",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "server by nodejs",
   "main": "./src/main.js",
   "bin": {
