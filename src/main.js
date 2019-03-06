@@ -201,7 +201,7 @@ exports = module.exports = (function (fs, path, express, underscore, console) {
                     isMatch = true;
 
                     if (!item.remote.match(/^https?:\/\//)) {
-                        item.remote = '//' + req.headers.host + item.remote;
+                        item.remote = 'http://' + req.headers.host + item.remote;
                     }
 
                     if (item.proxyType === 302) {
