@@ -8,7 +8,6 @@
         if (!pathname.match(/\/$/)) {
           pathname += '/';
         }
-        alert(pathname + url);
         window.location.href = pathname + url;
       }
       function gotoParent() {
