@@ -28,6 +28,7 @@ module.exports = (function (fs, path) {
             if (remoteUri.protocol === 'https:') {
                 reqProxyOption.port = 443;
                 http = require('https');
+                process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
             } else {
               http = require('http');
             }
