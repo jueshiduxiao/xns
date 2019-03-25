@@ -249,6 +249,10 @@ exports = module.exports = (function (fs, path, express, underscore, console) {
                     }
                 });
             }
+
+            if (params.https) {
+              _pri.https = params.https;
+            }
         };
 
         _pub['start'] = function () {
@@ -277,7 +281,13 @@ exports = module.exports = (function (fs, path, express, underscore, console) {
             app.use(_pri.response404);
 
             // listen
-            app.listen(_pri.port);
+            if (!_pri.https) {
+                app.listen(_pri.port);
+            } else {
+                const https = require('https');
+                const httpsServer = https.createServer(_pri.https.options, app);
+                httpsServer.listen(_pri.port);
+            }
         };
 
         if (this === 'test') {
