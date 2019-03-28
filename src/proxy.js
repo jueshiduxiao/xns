@@ -10,7 +10,7 @@ module.exports = (function (fs, path) {
 
         var http;
 
-        _pub['run'] = function (req, res, remote, remoteHostName, proxyCookie, proxyHost, referer) {
+        _pub['run'] = function (req, res, remote, remoteHostName, proxyCookie, proxyHost, referer, origin) {
             var url = require('url');
             var remoteUri = url.parse(decodeURIComponent(remote));
 
@@ -48,6 +48,9 @@ module.exports = (function (fs, path) {
             }
             if (referer) {
               reqProxyOption.headers.Referer = referer;
+            }
+            if (origin) {
+              reqProxyOption.headers.Origin = origin;
             }
 
             var reqExe = function (fn) {

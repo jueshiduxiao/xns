@@ -214,7 +214,9 @@ exports = module.exports = (function (fs, path, express, underscore, console) {
                       $$stringHelper.regexpReplace(url, rule, item.remote),
                       item.remoteHostName,
                       item.proxyCookie,
-                      item.proxyHost
+                      item.proxyHost,
+                      item.referer,
+                      item.origin
                     );
                     break;
                 }
