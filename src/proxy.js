@@ -47,10 +47,12 @@ module.exports = (function (fs, path) {
                 reqProxyOption.headers[key] = val;
             }
             if (referer) {
-              reqProxyOption.headers.Referer = referer;
+              delete reqProxyOption.headers.Referer;
+              reqProxyOption.headers.referer = referer;
             }
             if (origin) {
-              reqProxyOption.headers.Origin = origin;
+              delete reqProxyOption.headers.Origin;
+              reqProxyOption.headers.origin = origin;
             }
 
             var reqExe = function (fn) {
